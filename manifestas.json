@@ -2,7 +2,8 @@
   "name": "Nix AI Asisten",
   "short_name": "Nix AI",
   "description": "Asisten AI profesional, handal, dan friendly.",
-  "start_url": "./index.html",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#1c1c1e",
@@ -21,3 +22,4 @@
     }
   ]
 }
+
