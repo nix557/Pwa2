@@ -4,8 +4,8 @@
   "description": "Chatbot AI cerdas menggunakan Gemini 2.5 Flash.",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f4f4f9",
-  "theme_color": "#6200ea",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
