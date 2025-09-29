@@ -7,23 +7,17 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FFFFFF"/>
     <style>
-        /* ======================================================= */
-        /* KUNCI #1: MATIKAN SCROLL DI LEVEL TERTINGGI */
-        /* ======================================================= */
         html,
         body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Mencegah seluruh halaman di-scroll */
+            overflow: hidden;
             font-family: sans-serif;
             background-color: #f8f9fa;
         }
 
-        /* ======================================================= */
-        /* KUNCI #2: BUAT HEADER & FOOTER MENGAMBANG DENGAN 'FIXED' */
-        /* ======================================================= */
         .chat-header {
             position: fixed;
             top: 0;
@@ -37,7 +31,6 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            /* Menambahkan padding untuk 'notch' atau status bar */
             padding-top: env(safe-area-inset-top);
         }
 
@@ -55,30 +48,26 @@
             justify-content: center;
             box-sizing: border-box;
             padding: 0 1rem;
-             /* Menambahkan padding untuk home indicator di iOS */
             padding-bottom: env(safe-area-inset-bottom);
+            /* Transisi untuk pergerakan yang mulus */
+            transition: bottom 0.2s ease-out;
         }
 
-        /* ======================================================= */
-        /* KUNCI #3: AREA CHAT MENGISI LAYAR & DIBERI PADDING */
-        /* ======================================================= */
         .chat-messages {
-            height: 100%; /* Mengisi seluruh tinggi body */
-            overflow-y: auto; /* HANYA elemen ini yang bisa di-scroll */
-            box-sizing: border-box; /* WAJIB agar padding tidak menambah tinggi */
-            
-            /* Beri ruang kosong agar konten tidak tertutup header/footer */
+            height: 100%;
+            overflow-y: auto;
+            box-sizing: border-box;
             padding-top: 60px; /* Sama dengan tinggi header */
             padding-bottom: 70px; /* Sama dengan tinggi footer */
-
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding-left: 1rem;
             padding-right: 1rem;
+            /* Transisi untuk perubahan padding yang mulus */
+            transition: padding-bottom 0.2s ease-out;
         }
 
-        /* Sisa Styling */
         .chat-header h2 {
             margin: 0;
             font-size: 1.1rem;
@@ -135,16 +124,15 @@
     </style>
 </head>
 <body>
-    <!-- Header dan Footer sekarang berada di lapisan terpisah dari Main -->
     <header class="chat-header">
         <h2>Gemini AI Chat</h2>
     </header>
 
     <main class="chat-messages" id="chat-messages">
-        <!-- Pesan akan muncul di sini, di dalam area yang bisa di-scroll -->
+        <!-- Pesan akan muncul di sini -->
     </main>
 
-    <footer class="chat-input-form">
+    <footer class="chat-input-form" id="chat-footer">
         <form id="chat-form">
             <input type="text" id="message-input" placeholder="Ketik pesan..." required>
             <button type="submit">Kirim</button>
@@ -152,8 +140,6 @@
     </footer>
 
     <script>
-        // Skrip untuk tinggi viewport dinamis sudah tidak diperlukan dengan metode ini
-        
         // Pendaftaran Service Worker untuk PWA
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
@@ -167,7 +153,39 @@
           });
         }
 
-        // Logika Aplikasi Chat
+        // =======================================================
+        // KUNCI UTAMA: LOGIKA UNTUK MENANGANI KEYBOARD SELULER
+        // =======================================================
+        const handleVisualViewport = () => {
+            if (!window.visualViewport) {
+                return; // API tidak didukung, hentikan eksekusi
+            }
+
+            const chatFooter = document.getElementById('chat-footer');
+            const chatMessages = document.getElementById('chat-messages');
+            const initialFooterHeight = 70; // Tinggi footer awal
+
+            const onViewportResize = () => {
+                const keyboardHeight = window.innerHeight - window.visualViewport.height;
+
+                // Pindahkan footer ke atas setinggi keyboard
+                chatFooter.style.bottom = `${keyboardHeight}px`;
+
+                // Tambahkan padding ke area chat agar pesan terakhir tidak terhalang
+                chatMessages.style.paddingBottom = `${initialFooterHeight + keyboardHeight}px`;
+                
+                // Auto-scroll ke pesan terakhir saat keyboard muncul
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            };
+
+            window.visualViewport.addEventListener('resize', onViewportResize);
+        };
+        
+        // Panggil fungsi ini setelah DOM siap
+        document.addEventListener('DOMContentLoaded', handleVisualViewport);
+
+
+        // Logika Aplikasi Chat (tidak berubah)
         document.addEventListener('DOMContentLoaded', () => {
             const chatForm = document.getElementById('chat-form');
             const messageInput = document.getElementById('message-input');
