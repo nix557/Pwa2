@@ -1,37 +1,24 @@
-/* ======================================================= */
-/* KUNCI #1: KUNCI TOTAL BODY DAN HTML */
-/* ======================================================= */
 html, body {
-    height: 100%;
-    width: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Mencegah scroll di level tertinggi secara absolut */
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Mencegah body bisa di-scroll */
     font-family: sans-serif;
-    background-color: #ffffff;
 }
 
-/* ======================================================= */
-/* KUNCI #2: JADIKAN CONTAINER INI SEBAGAI LAYOUT UTAMA */
-/* ======================================================= */
 #app-container {
-    height: 100%; /* Mengisi penuh body yang sudah terkunci */
+    /* Tinggi container ini akan DIKONTROL OLEH JAVASCRIPT */
+    /* Kita tidak lagi menggunakan height: 100% atau 100vh di sini */
     width: 100%;
-    
-    /* Gunakan Flexbox untuk menata elemen di dalamnya */
     display: flex;
     flex-direction: column;
-    
-    background-color: #f8f9fa; /* Warna latar belakang area chat */
+    background-color: #f8f9fa;
+    transition: height 0.1s ease-out; /* Animasi halus saat keyboard muncul/hilang */
 }
 
-/* ======================================================= */
-/* HEADER & FOOTER - Ukuran Tetap, Tidak Bisa Di-scroll */
-/* ======================================================= */
 .chat-header, .chat-input-form {
-    /* Perintah agar elemen ini TIDAK PERNAH menyusut */
-    flex-shrink: 0; 
-    
+    flex-shrink: 0;
     background-color: #ffffff;
     border-color: #dbdbdb;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -41,34 +28,14 @@ html, body {
     justify-content: center;
     box-sizing: border-box;
 }
-.chat-header {
-    height: 60px;
-    border-bottom: 1px solid #dbdbdb;
-}
-.chat-header h2 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #333;
-}
-.chat-input-form {
-    height: 70px;
-    border-top: 1px solid #dbdbdb;
-    padding: 0 1rem;
-}
+.chat-header { height: 60px; border-bottom: 1px solid #dbdbdb; }
+.chat-header h2 { margin: 0; font-size: 1.1rem; color: #333; }
+.chat-input-form { height: 70px; border-top: 1px solid #dbdbdb; padding: 0 1rem; }
 
-/* ======================================================= */
-/* KUNCI #3: AREA CHAT - SATU-SATUNYA YANG BISA SCROLL */
-/* ======================================================= */
 .chat-messages {
-    /* Perintah agar elemen ini meregang mengisi SEMUA sisa ruang */
     flex-grow: 1;
-    
-    /* Hanya area ini yang memiliki scrollbar internal */
-    overflow-y: auto;
-    
-    /* Perbaikan penting agar 'overflow' bekerja dengan benar di dalam flexbox */
+    overflow-y: auto; /* Hanya area ini yang bisa scroll */
     min-height: 0;
-    
     padding: 1rem;
     box-sizing: border-box;
     display: flex;
