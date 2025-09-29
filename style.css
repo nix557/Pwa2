@@ -1,44 +1,47 @@
 /* ======================================================= */
-/* ATURAN DASAR & PENCEGAHAN SCROLL/ZOOM */
+/* ATURAN DASAR - INTI DARI SOLUSI INI */
 /* ======================================================= */
 
-html, body {
+html {
+    height: 100%;
+    overflow: hidden; /* Mencegah scroll di level tertinggi */
+}
+
+body {
     height: 100%;
     margin: 0;
-    padding: 0;
     font-family: sans-serif;
-    /* Mencegah scroll di body & menghilangkan efek 'bounce' yang mengungkap lapisan */
-    overflow: hidden; 
-    /* Warna latar belakang netral jika ada glitch rendering */
-    background-color: #f1f0f0; 
+    
+    /* KUNCI UTAMA: Jadikan body sebagai flex container vertikal */
+    display: flex;
+    flex-direction: column;
+    
+    /* Mencegah body itu sendiri bisa di-scroll atau 'bounce' */
+    overflow: hidden;
+    background-color: #f8f9fa; /* Warna latar belakang yang aman */
 }
 
 /* ======================================================= */
-/* HEADER & FOOTER - Tampilan Sama & Terkunci */
+/* HEADER & FOOTER - Ukuran Tetap, Tidak Pernah Berubah */
 /* ======================================================= */
 
 .chat-header, .chat-input-form {
-    position: fixed; /* Kunci posisi mereka */
-    left: 0;
-    width: 100%;
+    /* Mencegah elemen ini menyusut saat ruang terbatas */
+    flex-shrink: 0; 
     
-    /* Tampilan yang disamakan */
-    height: 65px; /* Tinggi yang sama */
-    background-color: #ffffff; /* Warna yang sama */
-    border-color: #dbdbdb; /* Warna border yang sama */
+    background-color: #ffffff;
+    border-color: #dbdbdb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    z-index: 10;
     
-    /* Aturan Flexbox untuk menengahkan konten di dalamnya */
     display: flex;
     align-items: center;
     justify-content: center;
-    
     box-sizing: border-box;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .chat-header {
-    top: 0; /* Kunci header di atas */
+    height: 60px; /* Tinggi header yang tetap */
     border-bottom: 1px solid #dbdbdb;
 }
 
@@ -49,28 +52,27 @@ html, body {
 }
 
 .chat-input-form {
-    bottom: 0; /* Kunci footer di bawah */
+    height: 70px; /* Tinggi footer yang tetap */
     border-top: 1px solid #dbdbdb;
-    padding: 0 1rem; /* Padding horizontal saja */
+    padding: 0 1rem;
 }
 
 /* ======================================================= */
-/* AREA CHAT UTAMA - DIJEPIT DI ANTARA HEADER & FOOTER */
+/* AREA CHAT UTAMA - Fleksibel & Satu-satunya yang Scroll */
 /* ======================================================= */
 
 .chat-messages {
-    /* KUNCI UTAMA: Ini menjepit area chat dengan presisi */
-    position: absolute;
-    top: 65px;      /* Mulai persis di bawah header */
-    bottom: 65px;   /* Berakhir persis di atas footer */
-    width: 100%;
-
-    /* HANYA area ini yang bisa di-scroll, tidak ada lagi lapisan aneh */
-    overflow-y: auto; 
+    /* KUNCI #2: Elemen ini akan meregang mengisi semua sisa ruang */
+    flex-grow: 1;
+    
+    /* KUNCI #3: Hanya area ini yang bisa di-scroll */
+    overflow-y: auto;
+    
+    /* Hack flexbox agar overflow bekerja dengan benar */
+    min-height: 0;
     
     padding: 1rem;
     box-sizing: border-box;
-    
     display: flex;
     flex-direction: column;
     gap: 1rem;
