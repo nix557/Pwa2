@@ -5,36 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini 2.5 Flash Chat</title>
     
-    <!-- ================== BLOK KODE PWA BARU ================== -->
-    <!-- Memberi tahu browser di mana file manifest PWA berada -->
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Mengatur warna tema untuk UI browser -->
     <meta name="theme-color" content="#6200ea"/>
-    
-    <!-- Menentukan ikon untuk perangkat Apple saat ditambahkan ke home screen -->
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    <!-- ========================================================= -->
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h2>Gemini 2.5 Flash AI</h2>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <!-- Pesan akan muncul di sini -->
-        </div>
-        <div class="chat-input-form">
-            <form id="chat-form">
-                <input type="text" id="message-input" placeholder="Ketik pesan atau API Key Anda..." required>
-                <button type="submit">Kirim</button>
-            </form>
-        </div>
-    </div>
 
-    <!-- Script JavaScript dimuat di akhir body -->
+    <!-- ELEMEN HEADER - TERPISAH -->
+    <header class="chat-header">
+        <h2>Gemini 2.5 Flash AI</h2>
+    </header>
+
+    <!-- ELEMEN UTAMA (AREA CHAT) - TERPISAH -->
+    <main class="chat-messages" id="chat-messages">
+        <!-- Pesan akan muncul di sini -->
+    </main>
+
+    <!-- ELEMEN FOOTER (INPUT FORM) - TERPISAH -->
+    <footer class="chat-input-form">
+        <form id="chat-form">
+            <input type="text" id="message-input" placeholder="Ketik pesan..." required>
+            <button type="submit">Kirim</button>
+        </form>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
