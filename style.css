@@ -1,58 +1,59 @@
 /* ======================================================= */
-/* ATURAN DASAR - INTI DARI SOLUSI INI */
+/* ATURAN DASAR - ISOLASI TOTAL DARI BODY */
 /* ======================================================= */
-
-html {
+html, body {
     height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden; /* Mencegah scroll di level tertinggi */
+    font-family: sans-serif;
+    background-color: #ffffff; /* Latar belakang body putih, sama dengan PWA */
 }
 
-body {
-    height: 100%;
-    margin: 0;
-    font-family: sans-serif;
+/* ======================================================= */
+/* CONTAINER UTAMA - "BINGKAI" YANG DIKUNCI KE LAYAR */
+/* ======================================================= */
+#app-container {
+    /* KUNCI #1: Kunci container ini ke setiap sudut layar. Ini membuatnya tidak bisa di-scroll. */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     
-    /* KUNCI UTAMA: Jadikan body sebagai flex container vertikal */
+    /* KUNCI #2: Gunakan Flexbox DI DALAM container yang sudah terkunci ini. */
     display: flex;
     flex-direction: column;
     
-    /* Mencegah body itu sendiri bisa di-scroll atau 'bounce' */
-    overflow: hidden;
-    background-color: #f8f9fa; /* Warna latar belakang yang aman */
+    background-color: #f8f9fa; /* Warna latar belakang area chat */
 }
 
 /* ======================================================= */
 /* HEADER & FOOTER - Ukuran Tetap, Tidak Pernah Berubah */
 /* ======================================================= */
-
 .chat-header, .chat-input-form {
-    /* Mencegah elemen ini menyusut saat ruang terbatas */
     flex-shrink: 0; 
-    
     background-color: #ffffff;
     border-color: #dbdbdb;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     z-index: 10;
-    
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
 }
-
 .chat-header {
-    height: 60px; /* Tinggi header yang tetap */
+    height: 60px;
     border-bottom: 1px solid #dbdbdb;
 }
-
 .chat-header h2 {
     margin: 0;
     font-size: 1.1rem;
     color: #333;
 }
-
 .chat-input-form {
-    height: 70px; /* Tinggi footer yang tetap */
+    height: 70px;
     border-top: 1px solid #dbdbdb;
     padding: 0 1rem;
 }
@@ -60,17 +61,10 @@ body {
 /* ======================================================= */
 /* AREA CHAT UTAMA - Fleksibel & Satu-satunya yang Scroll */
 /* ======================================================= */
-
 .chat-messages {
-    /* KUNCI #2: Elemen ini akan meregang mengisi semua sisa ruang */
     flex-grow: 1;
-    
-    /* KUNCI #3: Hanya area ini yang bisa di-scroll */
     overflow-y: auto;
-    
-    /* Hack flexbox agar overflow bekerja dengan benar */
     min-height: 0;
-    
     padding: 1rem;
     box-sizing: border-box;
     display: flex;
@@ -78,54 +72,10 @@ body {
     gap: 1rem;
 }
 
-/* ======================================================= */
-/* SISA STYLING */
-/* ======================================================= */
-
-.message {
-    padding: 0.75rem 1rem;
-    border-radius: 18px;
-    max-width: 80%;
-    line-height: 1.4;
-    word-wrap: break-word;
-}
-
-.user-message {
-    background-color: #dcf8c6;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-}
-
-.bot-message {
-    background-color: #ffffff;
-    border: 1px solid #f0f0f0;
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-}
-
-#chat-form {
-    display: flex;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-#message-input {
-    flex-grow: 1;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 0.5rem;
-    font-size: 1rem;
-    background-color: #ffffff;
-}
-
-#chat-form button {
-    background-color: #6200ea;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 1rem;
-}
+/* Sisa Styling */
+.message { padding: 0.75rem 1rem; border-radius: 18px; max-width: 80%; line-height: 1.4; word-wrap: break-word; }
+.user-message { background-color: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 4px; }
+.bot-message { background-color: #ffffff; border: 1px solid #f0f0f0; align-self: flex-start; border-bottom-left-radius: 4px; }
+#chat-form { display: flex; width: 100%; max-width: 800px; margin: 0 auto; }
+#message-input { flex-grow: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 20px; margin-right: 0.5rem; font-size: 1rem; background-color: #ffffff; }
+#chat-form button { background-color: #6200ea; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 20px; cursor: pointer; font-size: 1rem; }
