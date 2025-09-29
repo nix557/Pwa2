@@ -1,68 +1,77 @@
 /* ======================================================= */
-/* KUNCI #1: KUNCI TOTAL BODY DAN HTML */
+/* KUNCI #1: MATIKAN SCROLL DI LEVEL TERTINGGI */
 /* ======================================================= */
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Mencegah body bisa di-scroll secara absolut */
+    overflow: hidden; /* Ini perintah paling penting */
     font-family: sans-serif;
-    background-color: #ffffff;
+    background-color: #f8f9fa;
 }
 
 /* ======================================================= */
-/* KUNCI #2: BINGKAI APLIKASI YANG DIJEPIT KE LAYAR */
+/* KUNCI #2: 'ANGKAT' HEADER & FOOTER DARI HALAMAN */
 /* ======================================================= */
-#app-container {
-    /* Ini adalah perintah untuk 'menjepit' container ke setiap sudut body */
-    /* Karena body tidak bisa scroll, container ini juga tidak akan bisa scroll */
-    position: absolute;
+.chat-header {
+    position: fixed; /* 'Angkat' dan kunci posisinya */
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    
-    /* Gunakan Flexbox DI DALAM bingkai yang sudah stabil ini */
-    display: flex;
-    flex-direction: column;
-    
-    background-color: #f8f9fa; /* Warna latar belakang area chat */
-}
-
-/* ======================================================= */
-/* HEADER & FOOTER - Ukuran Tetap, Tidak Bisa Di-scroll */
-/* ======================================================= */
-.chat-header, .chat-input-form {
-    flex-shrink: 0; 
+    width: 100%;
+    height: 60px; /* Beri tinggi yang pasti */
     background-color: #ffffff;
-    border-color: #dbdbdb;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    z-index: 10;
+    border-bottom: 1px solid #dbdbdb;
+    z-index: 100; /* Pastikan selalu di lapisan paling atas */
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
 }
-.chat-header { height: 60px; border-bottom: 1px solid #dbdbdb; }
-.chat-header h2 { margin: 0; font-size: 1.1rem; color: #333; }
-.chat-input-form { height: 70px; border-top: 1px solid #dbdbdb; padding: 0 1rem; }
+
+.chat-input-form {
+    position: fixed; /* 'Angkat' dan kunci posisinya */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Beri tinggi yang pasti */
+    background-color: #ffffff;
+    border-top: 1px solid #dbdbdb;
+    z-index: 100; /* Pastikan selalu di lapisan paling atas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 1rem;
+}
 
 /* ======================================================= */
-/* AREA CHAT - SATU-SATUNYA YANG BISA SCROLL (DIJAMIN) */
+/* KUNCI #3: JADIKAN AREA CHAT SATU-SATUNYA YANG SCROLL */
 /* ======================================================= */
 .chat-messages {
-    flex-grow: 1;
+    /* Atur agar elemen ini mengisi seluruh tinggi body */
+    height: 100%;
+    
+    /* Perintah agar HANYA elemen ini yang bisa di-scroll */
     overflow-y: auto;
-    min-height: 0;
-    padding: 1rem;
+    
+    /* WAJIB: agar padding tidak menambah tinggi total */
     box-sizing: border-box;
+    
+    /* Beri ruang kosong agar konten tidak tertutup header/footer */
+    padding-top: 60px;  /* Sama dengan tinggi header */
+    padding-bottom: 70px; /* Sama dengan tinggi footer */
+
+    /* Sisa styling untuk pesan di dalamnya */
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 /* Sisa Styling */
+.chat-header h2 { margin: 0; font-size: 1.1rem; color: #333; }
 .message { padding: 0.75rem 1rem; border-radius: 18px; max-width: 80%; line-height: 1.4; word-wrap: break-word; }
 .user-message { background-color: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 4px; }
 .bot-message { background-color: #ffffff; border: 1px solid #f0f0f0; align-self: flex-start; border-bottom-left-radius: 4px; }
