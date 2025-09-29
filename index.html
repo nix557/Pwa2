@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-	<meta charset="UTF-8">
-	
-	<!-- KUNCI #1: Viewport ini secara tegas melarang semua jenis zoom oleh pengguna -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	
-	<title>Gemini AI Chat</title>
-	
-	<link rel="manifest" href="manifest.json">
-	<meta name="theme-color" content="#FFFFFF" />
-	<link rel="apple-touch-icon" href="icons/icon-192x192.png">
-	
-	<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gemini AI Chat</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF"/>
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-	
-	<div id="app-container">
-		<header class="chat-header">
-			<h2>Gemini AI Chat</h2>
-		</header>
-		
-		<main class="chat-messages" id="chat-messages">
-			<!-- Pesan akan muncul di sini -->
-		</main>
-		
-		<footer class="chat-input-form">
-			<form id="chat-form">
-				<input type="text" id="message-input" placeholder="Ketik pesan..." required>
-				<button type="submit">Kirim</button>
-			</form>
-		</footer>
-	</div>
-	
-	<script src="script.js"></script>
-</body>
 
+    <!-- Container utama yang akan menjadi 'jendela' aplikasi yang terkunci -->
+    <div id="app-container">
+
+        <header class="chat-header">
+            <h2>Gemini AI Chat</h2>
+        </header>
+
+        <main class="chat-messages" id="chat-messages">
+            <!-- Pesan akan muncul di sini -->
+        </main>
+
+        <footer class="chat-input-form">
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="Ketik pesan..." required>
+                <button type="submit">Kirim</button>
+            </form>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
