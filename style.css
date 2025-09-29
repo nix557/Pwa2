@@ -1,63 +1,77 @@
-/* Mencegah scrollbar muncul di browser utama */
+/* ======================================================= */
+/* ATURAN DASAR - INI ADALAH KUNCI UTAMA */
+/* ======================================================= */
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* SANGAT PENTING: Menghilangkan scrollbar dari body */
     font-family: sans-serif;
-    background-color: #f4f4f9;
+    /* Mencegah efek 'bounce' saat scroll di iOS */
+    overflow: hidden; 
 }
 
-.chat-container {
-    /* ================== KUNCI UTAMA LAYOUT GRID ================== */
-    
-    /* 1. Ubah container menjadi layout Grid */
-    display: grid;
-    
-    /* 2. Definisikan 3 baris: header(auto), chat(1fr), footer(auto) */
-    /*    - 'auto' berarti ukurannya sesuai konten. */
-    /*    - '1fr' berarti 'ambil semua sisa ruang yang tersedia'. */
-    grid-template-rows: auto 1fr auto;
-    
-    /* 3. Buat container mengisi seluruh tinggi layar */
-    height: 100vh;
-    
-    /* 4. Pastikan konten grid tidak meluap keluar container */
-    overflow: hidden;
-
-    /* ============================================================= */
-
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
+/* ======================================================= */
+/* HEADER - DIKUNCI DI ATAS LAYAR */
+/* ======================================================= */
 .chat-header {
+    position: fixed; /* Kunci posisinya */
+    top: 0;          /* Tempelkan di paling atas */
+    left: 0;
+    width: 100%;
     background-color: #6200ea;
     color: white;
     padding: 1rem;
     text-align: center;
-    /* Properti flex tidak lagi diperlukan */
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    z-index: 10; /* Pastikan selalu di atas konten lain */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.chat-messages {
-    /* ================== KUNCI UTAMA AREA SCROLL ================== */
-    
-    /* 1. PENTING: Tambahkan scrollbar HANYA ke area ini jika konten meluap */
-    overflow-y: auto;
-    
-    /* 2. Mencegah masalah rendering di dalam grid */
-    min-height: 0;
-    
-    /* ============================================================ */
-
+/* ======================================================= */
+/* FOOTER (INPUT) - DIKUNCI DI BAWAH LAYAR */
+/* ======================================================= */
+.chat-input-form {
+    position: fixed; /* Kunci posisinya */
+    bottom: 0;       /* Tempelkan di paling bawah */
+    left: 0;
+    width: 100%;
+    background-color: #f1f0f0;
     padding: 1rem;
+    border-top: 1px solid #ddd;
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    z-index: 10; /* Pastikan selalu di atas konten lain */
+}
+
+/* ======================================================= */
+/* AREA CHAT UTAMA - SATU-SATUNYA YANG BISA SCROLL */
+/* ======================================================= */
+.chat-messages {
+    /* Mengisi seluruh tinggi layar */
+    height: 100vh; 
+    
+    /* PENTING: Scrollbar HANYA akan muncul di sini */
+    overflow-y: auto; 
+    
+    /* Ini adalah triknya: beri ruang kosong di atas & bawah */
+    /* agar konten chat tidak tertutup oleh header & footer. */
+    /* Sesuaikan angka ini jika tinggi header/footer Anda berubah. */
+    padding-top: 80px;  /* Ruang untuk header */
+    padding-bottom: 90px; /* Ruang untuk footer */
+
+    box-sizing: border-box; /* Wajib, agar padding tidak menambah tinggi */
+    
+    /* Styling flex untuk pesan di dalamnya */
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
+
+/* ======================================================= */
+/* SISA STYLING (TIDAK BERUBAH BANYAK) */
+/* ======================================================= */
 
 .message {
     padding: 0.75rem 1rem;
@@ -79,15 +93,10 @@ html, body {
     border-bottom-left-radius: 4px;
 }
 
-.chat-input-form {
-    padding: 1rem;
-    background-color: #f1f0f0;
-    border-top: 1px solid #ddd;
-    /* Properti flex tidak lagi diperlukan */
-}
-
 #chat-form {
     display: flex;
+    max-width: 800px; /* Batasi lebar form di layar besar */
+    margin: 0 auto;
 }
 
 #message-input {
@@ -113,10 +122,11 @@ html, body {
     background-color: #3700b3;
 }
 
+/* Menengahkan konten di layar desktop */
 @media (min-width: 800px) {
-    .chat-container {
-        height: 95vh;
-        border-radius: 8px;
-        margin-top: 2.5vh;
+    .chat-header h2, .chat-messages {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
