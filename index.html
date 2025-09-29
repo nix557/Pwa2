@@ -6,24 +6,28 @@
     <title>Gemini AI Chat</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FFFFFF"/>
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app-container">
-        <header class="chat-header">
-            <h2>Gemini AI Chat</h2>
-        </header>
-        <main class="chat-messages" id="chat-messages">
-            <!-- Pesan akan muncul di sini -->
-        </main>
-        <footer class="chat-input-form">
-            <form id="chat-form">
-                <input type="text" id="message-input" placeholder="Ketik pesan..." required>
-                <button type="submit">Kirim</button>
-            </form>
-        </footer>
-    </div>
+
+    <!-- Header yang dikunci di atas -->
+    <header class="chat-header">
+        <h2>Gemini AI Chat</h2>
+    </header>
+
+    <!-- Area chat yang menjadi satu-satunya yang bisa scroll -->
+    <main class="chat-messages" id="chat-messages">
+        <!-- Pesan akan muncul di sini -->
+    </main>
+
+    <!-- Footer yang dikunci di bawah -->
+    <footer class="chat-input-form">
+        <form id="chat-form">
+            <input type="text" id="message-input" placeholder="Ketik pesan..." required>
+            <button type="submit">Kirim</button>
+        </form>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
