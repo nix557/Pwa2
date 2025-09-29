@@ -1,29 +1,13 @@
-// =======================================================
-// SOLUSI UNTUK MASALAH KEYBOARD MOBILE
-// =======================================================
-
-const setAppHeight = () => {
-    const appContainer = document.getElementById('app-container');
-    // 'window.innerHeight' SELALU memberikan tinggi viewport yang terlihat saat ini,
-    // bahkan ketika keyboard terbuka. Ini adalah sumber kebenaran kita.
-    appContainer.style.height = `${window.innerHeight}px`;
-};
-
-// Atur tinggi saat halaman pertama kali dimuat
-window.addEventListener('load', setAppHeight);
-
-// Atur ulang tinggi SETIAP KALI ukuran jendela berubah.
-// Ini terpicu saat keyboard muncul dan HILANG.
-window.addEventListener('resize', setAppHeight);
-
-// =======================================================
-// SISA KODE (PWA & LOGIKA CHAT)
-// =======================================================
-
-// Pendaftaran Service Worker
+// Pendaftaran Service Worker untuk PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW terdaftar')).catch(err => console.log('SW Gagal:', err));
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Pendaftaran ServiceWorker berhasil, scope: ', registration.scope);
+      })
+      .catch(err => {
+        console.log('Pendaftaran ServiceWorker gagal: ', err);
+      });
   });
 }
 
@@ -37,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!apiKey) {
         addMessageToChat('bot', 'Selamat datang! Silakan masukkan Google AI API Key Anda untuk memulai.');
     }
-
+    
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const message = messageInput.value.trim();
