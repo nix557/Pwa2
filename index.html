@@ -3,33 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gemini 2.5 Flash Chat</title>
+    <title>Gemini AI Chat</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#6200ea"/>
+    <meta name="theme-color" content="#FFFFFF"/> <!-- Pastikan ini putih -->
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ELEMEN HEADER - TERPISAH -->
-    <header class="chat-header">
-        <h2>Gemini 2.5 Flash AI</h2>
-    </header>
+    <!-- ======================================================= -->
+    <!-- KUNCI UTAMA: BUNGKUS SEMUANYA DALAM SATU CONTAINER INI -->
+    <!-- ======================================================= -->
+    <div id="app-container">
 
-    <!-- ELEMEN UTAMA (AREA CHAT) - TERPISAH -->
-    <main class="chat-messages" id="chat-messages">
-        <!-- Pesan akan muncul di sini -->
-    </main>
+        <!-- ELEMEN HEADER -->
+        <header class="chat-header">
+            <h2>Gemini AI Chat</h2>
+        </header>
 
-    <!-- ELEMEN FOOTER (INPUT FORM) - TERPISAH -->
-    <footer class="chat-input-form">
-        <form id="chat-form">
-            <input type="text" id="message-input" placeholder="Ketik pesan..." required>
-            <button type="submit">Kirim</button>
-        </form>
-    </footer>
+        <!-- ELEMEN UTAMA (AREA CHAT) -->
+        <main class="chat-messages" id="chat-messages">
+            <!-- Pesan akan muncul di sini -->
+        </main>
+
+        <!-- ELEMEN FOOTER (INPUT FORM) -->
+        <footer class="chat-input-form">
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="Ketik pesan..." required>
+                <button type="submit">Kirim</button>
+            </form>
+        </footer>
+
+    </div> <!-- Penutup app-container -->
 
     <script src="script.js"></script>
 </body>
