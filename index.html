@@ -143,7 +143,8 @@
         // Pendaftaran Service Worker untuk PWA
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
+            // FIX: Menggunakan path file yang benar
+            navigator.serviceWorker.register('/service-worker.js')
               .then(registration => {
                 console.log('Pendaftaran ServiceWorker berhasil, scope: ', registration.scope);
               })
@@ -153,40 +154,53 @@
           });
         }
 
-        // =======================================================
-        // KUNCI UTAMA: LOGIKA UNTUK MENANGANI KEYBOARD SELULER
-        // =======================================================
-        const handleVisualViewport = () => {
-            if (!window.visualViewport) {
-                return; // API tidak didukung, hentikan eksekusi
-            }
-
-            const chatFooter = document.getElementById('chat-footer');
-            const chatMessages = document.getElementById('chat-messages');
-            const initialFooterHeight = 70; // Tinggi footer awal
-
-            const onViewportResize = () => {
-                const keyboardHeight = window.innerHeight - window.visualViewport.height;
-
-                // Pindahkan footer ke atas setinggi keyboard
-                chatFooter.style.bottom = `${keyboardHeight}px`;
-
-                // Tambahkan padding ke area chat agar pesan terakhir tidak terhalang
-                chatMessages.style.paddingBottom = `${initialFooterHeight + keyboardHeight}px`;
-                
-                // Auto-scroll ke pesan terakhir saat keyboard muncul
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            };
-
-            window.visualViewport.addEventListener('resize', onViewportResize);
-        };
-        
-        // Panggil fungsi ini setelah DOM siap
-        document.addEventListener('DOMContentLoaded', handleVisualViewport);
-
-
-        // Logika Aplikasi Chat (tidak berubah)
+        // GABUNGKAN SEMUA LOGIKA DALAM SATU EVENT LISTENER
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // =======================================================
+            // KUNCI #1: MENCEGAH SCROLL PADA BODY (ANTI-BOUNCE)
+            // =======================================================
+            document.body.addEventListener('touchmove', (event) => {
+                const chatMessages = document.getElementById('chat-messages');
+                // Izinkan scroll HANYA jika sentuhan terjadi di dalam area chat atau input
+                if (!chatMessages.contains(event.target) && event.target.tagName !== 'INPUT') {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+
+
+            // =======================================================
+            // KUNCI #2: MENANGANI KEYBOARD DENGAN visualViewport
+            // =======================================================
+            const handleVisualViewport = () => {
+                if (!window.visualViewport) {
+                    return; // API tidak didukung, hentikan eksekusi
+                }
+
+                const chatFooter = document.getElementById('chat-footer');
+                const chatMessages = document.getElementById('chat-messages');
+                const initialFooterHeight = 70; // Tinggi footer awal
+
+                const onViewportResize = () => {
+                    const keyboardHeight = window.innerHeight - window.visualViewport.height;
+
+                    // keyboardHeight > 0 berarti keyboard muncul
+                    chatFooter.style.bottom = `${keyboardHeight}px`;
+                    chatMessages.style.paddingBottom = `${initialFooterHeight + keyboardHeight}px`;
+                    
+                    // Auto-scroll ke pesan terakhir
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                };
+
+                window.visualViewport.addEventListener('resize', onViewportResize);
+            };
+            
+            handleVisualViewport(); // Panggil fungsi keyboard handler
+
+
+            // =======================================================
+            // KUNCI #3: LOGIKA APLIKASI CHAT
+            // =======================================================
             const chatForm = document.getElementById('chat-form');
             const messageInput = document.getElementById('message-input');
             const chatMessages = document.getElementById('chat-messages');
