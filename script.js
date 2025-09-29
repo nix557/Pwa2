@@ -1,13 +1,29 @@
-// Pendaftaran Service Worker untuk PWA
+// =======================================================
+// SOLUSI UNTUK MASALAH KEYBOARD MOBILE
+// =======================================================
+
+const setAppHeight = () => {
+    const appContainer = document.getElementById('app-container');
+    // 'window.innerHeight' SELALU memberikan tinggi viewport yang terlihat saat ini,
+    // bahkan ketika keyboard terbuka. Ini adalah sumber kebenaran kita.
+    appContainer.style.height = `${window.innerHeight}px`;
+};
+
+// Atur tinggi saat halaman pertama kali dimuat
+window.addEventListener('load', setAppHeight);
+
+// Atur ulang tinggi SETIAP KALI ukuran jendela berubah.
+// Ini terpicu saat keyboard muncul dan HILANG.
+window.addEventListener('resize', setAppHeight);
+
+// =======================================================
+// SISA KODE (PWA & LOGIKA CHAT)
+// =======================================================
+
+// Pendaftaran Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('Pendaftaran ServiceWorker berhasil, scope: ', registration.scope);
-      })
-      .catch(err => {
-        console.log('Pendaftaran ServiceWorker gagal: ', err);
-      });
+    navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW terdaftar')).catch(err => console.log('SW Gagal:', err));
   });
 }
 
@@ -21,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!apiKey) {
         addMessageToChat('bot', 'Selamat datang! Silakan masukkan Google AI API Key Anda untuk memulai.');
     }
-    
+
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const message = messageInput.value.trim();
@@ -30,25 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!apiKey) {
             apiKey = message;
             sessionStorage.setItem('geminiApiKey', apiKey);
-            addMessageToChat('bot', 'API Key Anda telah disimpan untuk sesi ini. Sekarang Anda bisa mulai bertanya.');
+            addMessageToChat('bot', 'API Key Anda telah disimpan. Mulai bertanya.');
             messageInput.value = '';
             return;
         }
 
         addMessageToChat('user', message);
-        const thinkingMessage = addMessageToChat('bot', 'Sedang memproses...', true);
+        const thinkingMessage = addMessageToChat('bot', '...', true);
         messageInput.value = '';
 
         try {
             const botResponse = await getGeminiResponse(message, apiKey);
             updateMessage(thinkingMessage, botResponse);
         } catch (error) {
-            console.error('Detailed Error:', error);
-            const errorMessage = `Maaf, terjadi kesalahan: ${error.message}. Pastikan API Key Anda valid.`;
+            const errorMessage = `Error: ${error.message}. Pastikan API Key valid.`;
             updateMessage(thinkingMessage, errorMessage);
             sessionStorage.removeItem('geminiApiKey');
             apiKey = null;
-            addMessageToChat('bot', 'Silakan masukkan kembali API Key Anda.');
         }
     });
 
@@ -56,9 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', `${sender}-message`);
         messageElement.textContent = message;
-        if (isThinking) {
-            messageElement.id = 'thinking-message';
-        }
+        if (isThinking) messageElement.id = 'thinking-message';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         return messageElement;
@@ -81,9 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const candidate = data.candidates[0];
         if (candidate.content && candidate.content.parts[0].text) {
              return candidate.content.parts[0].text;
-        } else {
-            console.error("Unexpected API response format:", data);
-            return "Saya menerima respons yang tidak dapat saya proses saat ini.";
         }
+        return "Gagal memproses respons.";
     }
 });
