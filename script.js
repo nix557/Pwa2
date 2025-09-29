@@ -1,7 +1,7 @@
 // Pendaftaran Service Worker untuk PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.service-worker.register('/sw.js')
       .then(registration => {
         console.log('Pendaftaran ServiceWorker berhasil, scope: ', registration.scope);
       })
@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Logika Aplikasi Chat
+// Logika Aplikasi Chat (tidak ada kode layout)
 document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
     const messageInput = document.getElementById('message-input');
