@@ -2,43 +2,34 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <!-- META VIEWPORT DIPERBARUI untuk dukungan area aman -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gemini AI Chat</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FFFFFF"/>
     <style>
-        :root {
-            /* Variabel untuk tinggi viewport yang sebenarnya, diatur oleh JS */
-            --vh: 1vh;
-        }
-
-        html {
-            height: 100%;
-        }
-        
+        /* ======================================================= */
+        /* KUNCI #1: MATIKAN SCROLL DI LEVEL TERTINGGI */
+        /* ======================================================= */
+        html,
         body {
-            height: 100vh; /* Fallback untuk browser tanpa JS */
-            height: calc(var(--vh, 1vh) * 100); /* Tinggi dinamis untuk mengatasi keyboard */
+            height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden; /* Mencegah seluruh halaman di-scroll */
             font-family: sans-serif;
             background-color: #f8f9fa;
-
-            /* ======================================================= */
-            /* KUNCI #1: MENGGUNAKAN CSS GRID UNTUK STRUKTUR UTAMA */
-            /* ======================================================= */
-            display: grid;
-            grid-template-rows: auto 1fr auto; /* Header, Konten (fleksibel), Footer */
         }
 
         /* ======================================================= */
-        /* KUNCI #2: HEADER DAN FOOTER SEBAGAI BARIS GRID YANG TETAP */
+        /* KUNCI #2: BUAT HEADER & FOOTER MENGAMBANG DENGAN 'FIXED' */
         /* ======================================================= */
         .chat-header {
-            /* Hapus semua 'position' */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
             background-color: #ffffff;
             border-bottom: 1px solid #dbdbdb;
             z-index: 100;
@@ -46,13 +37,16 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            height: 60px;
             /* Menambahkan padding untuk 'notch' atau status bar */
             padding-top: env(safe-area-inset-top);
         }
 
         .chat-input-form {
-            /* Hapus semua 'position' */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
             background-color: #ffffff;
             border-top: 1px solid #dbdbdb;
             z-index: 100;
@@ -61,23 +55,27 @@
             justify-content: center;
             box-sizing: border-box;
             padding: 0 1rem;
-            height: 70px;
-            /* Menambahkan padding untuk home indicator di iOS */
+             /* Menambahkan padding untuk home indicator di iOS */
             padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* ======================================================= */
-        /* KUNCI #3: AREA CHAT MENGISI SISA RUANG DAN BISA SCROLL */
+        /* KUNCI #3: AREA CHAT MENGISI LAYAR & DIBERI PADDING */
         /* ======================================================= */
         .chat-messages {
-            /* Hapus semua 'position' */
+            height: 100%; /* Mengisi seluruh tinggi body */
             overflow-y: auto; /* HANYA elemen ini yang bisa di-scroll */
-            box-sizing: border-box;
+            box-sizing: border-box; /* WAJIB agar padding tidak menambah tinggi */
+            
+            /* Beri ruang kosong agar konten tidak tertutup header/footer */
+            padding-top: 60px; /* Sama dengan tinggi header */
+            padding-bottom: 70px; /* Sama dengan tinggi footer */
+
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            padding: 1rem; /* Padding internal */
-            min-height: 0; /* Mencegah overflow pada layout flex/grid */
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
 
         /* Sisa Styling */
@@ -137,13 +135,13 @@
     </style>
 </head>
 <body>
-    <!-- STRUKTUR HTML YANG SESUAI DENGAN CSS GRID -->
+    <!-- Header dan Footer sekarang berada di lapisan terpisah dari Main -->
     <header class="chat-header">
         <h2>Gemini AI Chat</h2>
     </header>
 
     <main class="chat-messages" id="chat-messages">
-        <!-- Pesan akan muncul di sini -->
+        <!-- Pesan akan muncul di sini, di dalam area yang bisa di-scroll -->
     </main>
 
     <footer class="chat-input-form">
@@ -154,15 +152,8 @@
     </footer>
 
     <script>
-        // PENAMBAHAN: Skrip untuk menangani perubahan tinggi viewport pada seluler
-        const setViewportHeight = () => {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        };
-        // Panggil saat memuat dan saat ukuran jendela diubah
-        window.addEventListener('resize', setViewportHeight);
-        setViewportHeight();
-
+        // Skrip untuk tinggi viewport dinamis sudah tidak diperlukan dengan metode ini
+        
         // Pendaftaran Service Worker untuk PWA
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
