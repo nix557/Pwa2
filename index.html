@@ -24,12 +24,18 @@
             background-color: #f8f9fa;
         }
 
+        /* PENAMBAHAN: Wrapper untuk mengunci semua elemen */
+        .chat-container {
+            position: relative;
+            height: 100vh; /* Menggunakan vh untuk tinggi viewport penuh */
+            width: 100%;
+        }
+
         /* ======================================================= */
         /* KUNCI #2: 'ANGKAT' HEADER & FOOTER DARI HALAMAN */
         /* ======================================================= */
         .chat-header {
-            position: fixed;
-            /* 'Angkat' dan kunci posisinya */
+            position: absolute; /* DIUBAH dari 'fixed' menjadi 'absolute' */
             top: 0;
             left: 0;
             width: 100%;
@@ -46,8 +52,7 @@
         }
 
         .chat-input-form {
-            position: fixed;
-            /* 'Angkat' dan kunci posisinya */
+            position: absolute; /* DIUBAH dari 'fixed' menjadi 'absolute' */
             bottom: 0;
             left: 0;
             width: 100%;
@@ -148,24 +153,26 @@
     </style>
 </head>
 <body>
+    <!-- PENAMBAHAN: Elemen pembungkus untuk mengunci layout -->
+    <div class="chat-container">
+        <!-- Header yang dikunci di atas -->
+        <header class="chat-header">
+            <h2>Gemini AI Chat</h2>
+        </header>
 
-    <!-- Header yang dikunci di atas -->
-    <header class="chat-header">
-        <h2>Gemini AI Chat</h2>
-    </header>
+        <!-- Area chat yang menjadi satu-satunya yang bisa scroll -->
+        <main class="chat-messages" id="chat-messages">
+            <!-- Pesan akan muncul di sini -->
+        </main>
 
-    <!-- Area chat yang menjadi satu-satunya yang bisa scroll -->
-    <main class="chat-messages" id="chat-messages">
-        <!-- Pesan akan muncul di sini -->
-    </main>
-
-    <!-- Footer yang dikunci di bawah -->
-    <footer class="chat-input-form">
-        <form id="chat-form">
-            <input type="text" id="message-input" placeholder="Ketik pesan..." required>
-            <button type="submit">Kirim</button>
-        </form>
-    </footer>
+        <!-- Footer yang dikunci di bawah -->
+        <footer class="chat-input-form">
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="Ketik pesan..." required>
+                <button type="submit">Kirim</button>
+            </form>
+        </footer>
+    </div>
 
     <script>
         // Pendaftaran Service Worker untuk PWA
@@ -256,3 +263,4 @@
     </script>
 </body>
 </html>
+
